@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3ec16533ee819479161e22c3f5e307, type: 3}
+  m_Name: Pipe
+  m_EditorClassIdentifier: 
+  name: Pipe
+  description: Pumps water, preferably to places that need it.
+  price: 100
+  tiles:
+  - {fileID: 11400000, guid: 6fc5d21cf1cfbc74b9dc3cd1e48d09b5, type: 2}
+  overrideConstraints: 0
+  overrideAxis: 0
+  prefab: {fileID: 3553146265439201392, guid: 4c602fd941a9b0940afcf1c42f257dbb, type: 3}
+  addToGenericObjectArray: 0

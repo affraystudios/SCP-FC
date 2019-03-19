@@ -52,3 +52,29 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# ===========================
+# Default Collab Ignore Rules
+# ===========================
+
+# OS Generated
+# ============
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+[Tt]humbs.db
+[Dd]esktop.ini
+
+# Visual Studio / MonoDevelop generated
+# =====================================
+[Ee]xported[Oo]bj/
+
+# Unity generated
+# ===============
+[Oo]bj/
+[Bb]uild
+*.stackdump
+

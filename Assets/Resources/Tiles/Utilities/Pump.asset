@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3ec16533ee819479161e22c3f5e307, type: 3}
+  m_Name: Pump
+  m_EditorClassIdentifier: 
+  name: Pump
+  description: Pumps water onto the surface. Probably a bad idea.
+  price: 100
+  tiles:
+  - {fileID: 11400000, guid: f8cf88b56178de149acf85a5c42febde, type: 2}
+  isPower: 0
+  usePrefab: 1
+  addToGenericObjectArray: 0
+  prefab: {fileID: 6072740376915564785, guid: 1eeaa3fe8a03a6948ba89392fe8c246d, type: 3}

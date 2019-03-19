@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4324a638eaa756488209fca58be1295, type: 3}
+  m_Name: Builder
+  m_EditorClassIdentifier: 
+  name: Builder
+  description: It aint much, but it's honest work.
+  price: 100
+  tiles:
+  - {fileID: 11400000, guid: eba4d03ae6b1241429311a8c8574da4d, type: 2}
+  prefab: {fileID: 1083179297031100, guid: 21df8956591becf48a7b07a2e1a24e48, type: 3}

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4324a638eaa756488209fca58be1295, type: 3}
+  m_Name: Door
+  m_EditorClassIdentifier: 
+  name: Metal Door
+  description: A standard metal door
+  price: 150
+  tiles:
+  - {fileID: 11400000, guid: 891da153c34ea8c40a3c8a63f43943f1, type: 2}
+  - {fileID: 11400000, guid: 9153399390175724792ba7b526cd5b49, type: 2}
+  - {fileID: 11400000, guid: 891da153c34ea8c40a3c8a63f43943f1, type: 2}
+  - {fileID: 11400000, guid: 9153399390175724792ba7b526cd5b49, type: 2}
+  prefab: {fileID: 1415248441059258, guid: 43aecd5726bfb1a46810675bcd4719c1, type: 3}

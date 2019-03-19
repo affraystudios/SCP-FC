@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4324a638eaa756488209fca58be1295, type: 3}
+  m_Name: Light
+  m_EditorClassIdentifier: 
+  name: Light
+  description: Lights up your life.
+  price: 50
+  tiles:
+  - {fileID: 11400000, guid: b998ff06189ea674e960353489822b84, type: 2}
+  prefab: {fileID: 4034010185881164387, guid: 33ce300db4c090849b6cd5477164dec2, type: 3}
