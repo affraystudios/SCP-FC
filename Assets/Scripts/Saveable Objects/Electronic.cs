@@ -206,11 +206,12 @@ public class Electronic : Interactable
 
         ElectronicData data = (ElectronicData)dataToUse;
 
-        //Grab the references based on the stored position
-        Debug.Log(GameManager.manager.tileManager.utilityObjects.GetLength(0));
-
-        if(data.generator.vector.Length >= 2)
-            generator = GameManager.manager.tileManager.utilityObjects[(int)data.generator.vector[0], (int)data.generator.vector[1]].GetComponent<Generator>();
+        if (data.generator != null)
+        {
+            //Grab the generator based on the stored position
+            Vector3Int generatorPos = Vector3Int.FloorToInt(data.generator) - GameManager.manager.tileManager.worldOrigin;
+            generator = GameManager.manager.tileManager.utilityObjects[generatorPos.x, generatorPos.y].GetComponent<Generator>();
+        }
 
         //Grab the references from their positions
         for (int i = 0; i < data.input.Count; i++)
@@ -220,7 +221,12 @@ public class Electronic : Interactable
             input.Add(GameManager.manager.tileManager.utilityObjects[pos.x, pos.y].GetComponent<Electronic>());
         }
 
-        breaker = GameManager.manager.tileManager.utilityObjects[Vector3Int.FloorToInt(data.breaker).x, Vector3Int.FloorToInt(data.breaker).y].GetComponent<Breaker>();
+        if (data.breaker != null)
+        {
+            //Grab the breaker based on the stored position
+            Vector3Int breakerPos = Vector3Int.FloorToInt(data.breaker) - GameManager.manager.tileManager.worldOrigin;
+            breaker = GameManager.manager.tileManager.utilityObjects[breakerPos.x, breakerPos.y].GetComponent<Breaker>();
+        }
 
         requiredPower = data.requiredPower;
         hasPower = data.hasPower;

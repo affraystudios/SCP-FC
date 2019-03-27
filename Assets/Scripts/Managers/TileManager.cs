@@ -455,8 +455,6 @@ public class TileManager : MonoBehaviour
                 objects[localPosition.x, localPosition.y].GetComponent<SaveableObject>().spriteRenderer.sprite = ((Tile)objectTiles[tile].tiles[rotation]).sprite;
                 tileData.objectTileTypes[localPosition.x, localPosition.y] = tile;
                 tileData.tileRotation[localPosition.x, localPosition.y] = rotation;
-
-                Debug.Log(objects[localPosition.x, localPosition.y]);
                 break;
             //Background
             case 3:
@@ -479,8 +477,10 @@ public class TileManager : MonoBehaviour
                 GameObject obj = Instantiate(utilityTiles[tile].prefab, position + (Vector3.one * 0.5f), Quaternion.identity, utilityTileGrid);
 
                 utilityObjects[localPosition.x, localPosition.y] = obj.GetComponent<SaveableObject>();
-                Debug.Log("Utility built");
+
+                tileData.utilityTileTypes[localPosition.x, localPosition.y] = tile;
                 break;
+            //AI
             case 6:
                 GameObject aiObj = Instantiate(placeableAI[tile].prefab, worldOrigin + localPosition + (Vector3.one * 0.5f), Quaternion.identity);
                 break;
@@ -890,6 +890,24 @@ public class TileManager : MonoBehaviour
                             break;
                     }
                 }
+
+                if(utilityObjects[x, y] != null)
+                {
+                    switch (utilityObjects[x, y].tag)
+                    {
+                        case "Wire":
+                            data.wires.Add((WireData)utilityObjects[x, y].GetComponent<Wire>().Save(new WireData()));
+                            break;
+
+                        case "Generator":
+                            data.generators.Add((GeneratorData)utilityObjects[x, y].GetComponent<Generator>().Save(new GeneratorData()));
+                            break;
+
+                        case "Breaker":
+                            data.breakers.Add((BreakerData)utilityObjects[x, y].GetComponent<Breaker>().Save(new BreakerData()));
+                            break;
+                    }
+                }
             }
         }
 
@@ -945,17 +963,24 @@ public class TileManager : MonoBehaviour
             for (int y = 0; y < ySize; y++)
             {
                 Vector3Int pos = new Vector3Int(worldOrigin.x + x, worldOrigin.y + y, 0);
+
                 if (tileData.floorTileTypes[x, y] >= 0)
                     SetTile(pos, 0, tileData.floorTileTypes[x, y], 0, false, false);
+
                 if (tileData.wallTileTypes[x, y] >= 0)
                 {
                     SetTile(pos, 1, tileData.wallTileTypes[x, y], 0, false, false);
                     DamageWall(pos, 0);
                 }
+
                 if (tileData.objectTileTypes[x, y] >= 0)
                     SetTile(pos, 2, tileData.objectTileTypes[x, y], 0, false, false);
+
                 if (tileData.backgroundTileTypes[x, y] >= 0)
-                    SetTile(pos, 3, tileData.backgroundTileTypes[x, y], 0, false);
+                    SetTile(pos, 3, tileData.backgroundTileTypes[x, y], 0, false, false);
+
+                if (tileData.utilityTileTypes[x, y] >= 0)
+                    SetTile(pos, 5, tileData.utilityTileTypes[x, y], 0, true, false);
 
             }
         }
@@ -966,6 +991,8 @@ public class TileManager : MonoBehaviour
         datas.AddRange(tileData.interactables);
         datas.AddRange(tileData.electronics);
         datas.AddRange(tileData.generators);
+        datas.AddRange(tileData.wires);
+        datas.AddRange(tileData.breakers);
 
         foreach (ObjectData data in datas)
         {

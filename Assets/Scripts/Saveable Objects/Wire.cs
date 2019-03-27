@@ -147,8 +147,10 @@ public class Wire : Electronic
         WireData data = (WireData)base.Save(dataToUse);
 
         //Convert the references into something serializable
+        data.output = new List<SerializableVector3>();
         for (int i = 0; i < output.Count; i++)
         {
+            if(output[i] != null)
             data.output.Add(output[i].transform.position);
         }
 
@@ -161,6 +163,7 @@ public class Wire : Electronic
         WireData data = (WireData)dataToUse;
 
         //Grab the references from their positions
+        output = new List<Electronic>();
         for (int i = 0; i < data.output.Count; i++)
         {
             Vector3Int pos = Vector3Int.RoundToInt(data.output[i]);
