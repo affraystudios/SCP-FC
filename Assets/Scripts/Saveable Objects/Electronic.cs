@@ -216,9 +216,9 @@ public class Electronic : Interactable
         //Grab the references from their positions
         for (int i = 0; i < data.input.Count; i++)
         {
-            Vector3Int pos = Vector3Int.RoundToInt(data.input[i]);
+            Vector3Int pos = Vector3Int.FloorToInt(data.input[i]) - GameManager.manager.tileManager.worldOrigin;
 
-            input.Add(GameManager.manager.tileManager.utilityObjects[pos.x, pos.y].GetComponent<Electronic>());
+            input.Add(GameManager.manager.tileManager.utilityObjects[pos.x, pos.y].GetComponent<Interactable>());
         }
 
         if (data.breaker != null)

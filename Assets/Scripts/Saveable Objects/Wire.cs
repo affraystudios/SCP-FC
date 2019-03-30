@@ -166,9 +166,16 @@ public class Wire : Electronic
         output = new List<Electronic>();
         for (int i = 0; i < data.output.Count; i++)
         {
-            Vector3Int pos = Vector3Int.RoundToInt(data.output[i]);
+            Vector3Int pos = Vector3Int.FloorToInt(data.output[i]) - GameManager.manager.tileManager.worldOrigin;
 
-            output.Add(GameManager.manager.tileManager.utilityObjects[pos.x, pos.y].GetComponent<Electronic>());
+            if (GameManager.manager.tileManager.utilityObjects[pos.x, pos.y] != null)
+            {
+                output.Add(GameManager.manager.tileManager.utilityObjects[pos.x, pos.y].GetComponent<Electronic>());
+            }
+            else if(GameManager.manager.tileManager.objects[pos.x, pos.y] != null)
+            {
+                output.Add(GameManager.manager.tileManager.objects[pos.x, pos.y].GetComponent<Electronic>());
+            }
         }
     }
 

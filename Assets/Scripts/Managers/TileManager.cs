@@ -498,7 +498,7 @@ public class TileManager : MonoBehaviour
         if (layer != 3)
             Instantiate(effectPrefab, position, Quaternion.identity, objectTileGrid);
 
-        if (layer < 5)
+        if (layer <= 5)
             blueprintTileMaps[layer].SetTile(position, null);
 
         Vector3Int localPosition = position - worldOrigin;
@@ -886,25 +886,27 @@ public class TileManager : MonoBehaviour
                             break;
 
                         default:
-                            data.objects.Add(objects[x, y].GetComponent<SaveableObject>().Save(new ObjectData()));
+                            data.objects.Add(objects[x, y].GetComponent<SaveableObject>().Save(new ObjectData ()));
                             break;
                     }
                 }
 
                 if(utilityObjects[x, y] != null)
                 {
+                    //EHHHHHHHH
+                    // We have to use this to seperate them.
                     switch (utilityObjects[x, y].tag)
                     {
                         case "Wire":
-                            data.wires.Add((WireData)utilityObjects[x, y].GetComponent<Wire>().Save(new WireData()));
+                            data.wires.Add((WireData)utilityObjects[x, y].GetComponent<Wire>().Save(new WireData { useUtilityList = true }));
                             break;
 
                         case "Generator":
-                            data.generators.Add((GeneratorData)utilityObjects[x, y].GetComponent<Generator>().Save(new GeneratorData()));
+                            data.generators.Add((GeneratorData)utilityObjects[x, y].GetComponent<Generator>().Save(new GeneratorData { useUtilityList = true }));
                             break;
 
                         case "Breaker":
-                            data.breakers.Add((BreakerData)utilityObjects[x, y].GetComponent<Breaker>().Save(new BreakerData()));
+                            data.breakers.Add((BreakerData)utilityObjects[x, y].GetComponent<Breaker>().Save(new BreakerData { useUtilityList = true }));
                             break;
                     }
                 }
@@ -996,8 +998,17 @@ public class TileManager : MonoBehaviour
 
         foreach (ObjectData data in datas)
         {
-            Vector3 pos = (Vector3)data.position - worldOrigin;
-            objects[(int)pos.x, (int)pos.y].GetComponent<SaveableObject>().Load(data);
+            Vector3Int pos = Vector3Int.FloorToInt(data.position) - worldOrigin;
+            //EHHH
+            // We have to seperate this to avoid a nullref
+            if (data.useUtilityList)
+            {
+                utilityObjects[pos.x, pos.y].GetComponent<SaveableObject>().Load(data);
+            }
+            else
+            {
+                objects[pos.x, pos.y].GetComponent<SaveableObject>().Load(data);
+            }
         }
 
         //Load zones

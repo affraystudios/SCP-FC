@@ -129,7 +129,7 @@ public class Generator : Interactable
         //Grab the references from their positions
         for (int i = 0; i < data.connected.Count; i++)
         {
-            Vector3Int pos = Vector3Int.RoundToInt(data.connected[i]);
+            Vector3Int pos = Vector3Int.FloorToInt(data.connected[i]) - GameManager.manager.tileManager.worldOrigin;
             if (GameManager.manager.tileManager.utilityObjects[pos.x, pos.y] != null)
             {
                 connected.Add(GameManager.manager.tileManager.utilityObjects[pos.x, pos.y].GetComponent<Electronic>());

@@ -81,6 +81,7 @@ public class SaveManager : MonoBehaviour
         loading = true;
         Debug.Log("Loading Scene");
         yield return StartCoroutine(manager.GoToScene(1));
+        loading = false;
 
         Debug.Log("Loading Tile Data");
         manager.tileManager.Load();
@@ -91,7 +92,6 @@ public class SaveManager : MonoBehaviour
         Debug.Log("Loading Time Data");
         manager.timeManager.Load();
 
-        loading = false;
         Debug.Log("Data Successfully Loaded");
     }
 
@@ -213,6 +213,7 @@ public struct WorldSettings
 [System.Serializable]
 public class ObjectData
 {
+    public bool useUtilityList = false;
     public SerializableVector3 position;
 }
 
