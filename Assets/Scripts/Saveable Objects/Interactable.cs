@@ -14,8 +14,8 @@ public class Interactable : SaveableEntity
 
     public Sprite[] sprites;
 
-    public Sprite[] frontSprites = new Sprite[2],
-        backSprites = new Sprite[2],
+    public Sprite[] frontSprites = new Sprite[2], 
+        backSprites = new Sprite[2], 
         sideSprites = new Sprite[2];
 
     public AccessLevel accessLevel;
@@ -81,6 +81,7 @@ public class Interactable : SaveableEntity
         anim.SetBool("On", on);
         spriteRenderer.sprite = sprites[0];
         PlaySound(disableSound);
+
         if (tooltip != null)
             tooltip.SetProperty("On", on.ToString());
     }
@@ -91,6 +92,7 @@ public class Interactable : SaveableEntity
         anim.SetBool("On", on);
         spriteRenderer.sprite = sprites[1];
         PlaySound(enableSound);
+
         if (tooltip != null)
             tooltip.SetProperty("On", on.ToString());
     }

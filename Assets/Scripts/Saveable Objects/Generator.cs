@@ -24,14 +24,14 @@ public class Generator : Interactable
     }
 
     //Check if the generator is being overdrawn
-    public void CheckPower ()
+    public void CheckPower()
     {
-        if(availablePower < 0)
+        if (availablePower < 0)
         {
             Blackout();
         }
         else if (availablePower > totalPower)
-          availablePower = totalPower;
+            availablePower = totalPower;
 
         if (tooltip != null)
         {
@@ -41,7 +41,7 @@ public class Generator : Interactable
         }
     }
 
-    public void Blackout ()
+    public void Blackout()
     {
         //Disable this
         Disable();
@@ -59,7 +59,6 @@ public class Generator : Interactable
         {
             if (electronic == null)
             {
-                //connectedElectronics.Remove(electronic);
                 continue;
             }
 
