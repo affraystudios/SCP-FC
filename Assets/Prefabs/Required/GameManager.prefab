@@ -423,7 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input:
-    m_Asset: {fileID: 11400000, guid: 75e70b06d65a777468f0fe78a1ca5fba, type: 3}
+    m_Asset: {fileID: -944628639613478452, guid: 75e70b06d65a777468f0fe78a1ca5fba,
+      type: 3}
   gamepadSensitivity: 200
   movement: {x: 0, y: 0}
   openLayerSelect: 0
