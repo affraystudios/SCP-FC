@@ -1,4 +1,4 @@
-  ﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -108,7 +108,9 @@ public class Interactable : SaveableEntity
         base.Load(data);
         on = data.on;
         if (on)
-            Interact();
+            Enable();
+        else
+            Disable();
     }
 
     protected void PlaySound(AudioClip clip)
