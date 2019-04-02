@@ -285,22 +285,16 @@ public class BreakerData : WireData
 [System.Serializable]
 public struct TileData
 {
+    //2D arrays of tile data
     public float[,] pathfindingCosts, pathfindingRatios, waterLevels;
     public int[,] wallHealth;
 
-    public int[,] backgroundTileTypes,
-        floorTileTypes,
-        wallTileTypes,
-        objectTileTypes,
-        utilityTileTypes,
-        
+    public int[,,] tileTypes,
+
         tileRotation,
 
-        backgroundTileTypesToBuild,
-        floorTileTypesToBuild,
-        wallTileTypesToBuild,
-        objectTileTypesToBuild,
-        utilityTileTypesToBuild;
+        tileTypesToBuild;
+
 
     public List<SerializableTask> tasks;
 
@@ -308,6 +302,7 @@ public struct TileData
 
     public List<SerializableVector3> waterToSimulate;
 
+    //Objects
     public List<InteractableData> interactables;
     public List<ElectronicData> electronics;
     public List<GeneratorData> generators;
@@ -320,17 +315,22 @@ public struct TileData
     {
         Vector2 size = settings.size;
 
+        int layers = 6;
+
         int xSize = (int)size.x;
         int ySize = (int)size.y;
 
-        int[,] tileTypes = new int[xSize, ySize];
+        tileTypes = new int[xSize, ySize, layers];
+
+        tileTypesToBuild = new int[xSize, ySize, layers];
 
         //We have to default everything to -1 so that when we load it doesn't mistake empty tiles for the first tile in the list.
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
             {
-                tileTypes[x, y] = -1;
+                for(int l = 0; l < layers; l++)
+                    tileTypes[x, y, layers] = -1;
             }
         }
 
@@ -338,19 +338,11 @@ public struct TileData
 
         waterToSimulate = new List<SerializableVector3>();
 
-        floorTileTypesToBuild = (int[,])tileTypes.Clone();
-        wallTileTypesToBuild = (int[,])tileTypes.Clone();
-        objectTileTypesToBuild = (int[,])tileTypes.Clone();
-        backgroundTileTypesToBuild = (int[,])tileTypes.Clone();
-        utilityTileTypesToBuild = (int[,])tileTypes.Clone();
+        tileTypesToBuild = (int[,,])tileTypes.Clone();
 
-        tileRotation = (int[,])tileTypes.Clone();
+        tileRotation = (int[,,])tileTypes.Clone();
 
-        floorTileTypes = (int[,])tileTypes.Clone();
-        wallTileTypes = (int[,])tileTypes.Clone();
-        objectTileTypes = (int[,])tileTypes.Clone();
-        backgroundTileTypes = (int[,])tileTypes.Clone();
-        utilityTileTypes = (int[,])tileTypes.Clone();
+        tileTypes = (int[,,])tileTypes.Clone();
 
         pathfindingCosts = new float[xSize, ySize];
         pathfindingRatios = new float[xSize, ySize];

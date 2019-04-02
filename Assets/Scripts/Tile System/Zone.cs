@@ -51,7 +51,7 @@ public class Zone
         position = new Vector3Int();
         foreach (Vector3Int tile in tiles)
         {
-            if (manager.objectTiles[manager.tileData.objectTileTypes[tile.x - manager.worldOrigin.x, tile.y - manager.worldOrigin.y]] == tileType)
+            if (manager.objectTiles[manager.tileData.tileTypes[tile.x - manager.worldOrigin.x, tile.y - manager.worldOrigin.y, 2]] == tileType)
             {
                 position = tile;
                 return true;
@@ -81,7 +81,7 @@ public class Zone
         {
             try
             {
-                if (manager.wallTiles[manager.tileData.wallTileTypes[v.x - manager.worldOrigin.x, v.y - manager.worldOrigin.y]] == null)
+                if (manager.wallTiles[manager.tileData.tileTypes[v.x - manager.worldOrigin.x, v.y - manager.worldOrigin.y, 1]] == null)
                 {
                     if (manager.objects[v.x - manager.worldOrigin.x, v.y - manager.worldOrigin.y].name.Contains("Door"))
                     {

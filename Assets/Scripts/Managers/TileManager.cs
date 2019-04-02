@@ -330,7 +330,7 @@ public class TileManager : MonoBehaviour
 
             blueprintTileMaps[layer].SetTile(pos, tiles[tile].tiles[0]);
 
-            tileData.tileRotation[localPosition.x, localPosition.y] = rotation;
+            tileData.tileRotation[localPosition.x, localPosition.y, layer] = rotation;
 
             //Add a new task to the list
             Task newTask = new Task
@@ -422,6 +422,9 @@ public class TileManager : MonoBehaviour
         if (layer < 6)
             blueprintTileMaps[layer].SetTile(position, null);
 
+        tileData.tileTypes[localPosition.x, localPosition.y, layer] = tile;
+        tileData.tileRotation[localPosition.x, localPosition.y, layer] = rotation;
+
         switch (layer)
         {
             //Floor
@@ -431,8 +434,6 @@ public class TileManager : MonoBehaviour
 
                 tileData.pathfindingCosts[localPosition.x, localPosition.y] = floorTiles[tile].movementCost;
                 tileData.pathfindingRatios[localPosition.x, localPosition.y] = floorTiles[tile].movementRatio;
-
-                tileData.floorTileTypes[localPosition.x, localPosition.y] = tile;
                 break;
             //Walls
             case 1:
@@ -441,7 +442,6 @@ public class TileManager : MonoBehaviour
 
                 damageTileMap.SetTile(position, null);
                 tileData.wallHealth[localPosition.x, localPosition.y] = wallTiles[tile].strength;
-                tileData.wallTileTypes[localPosition.x, localPosition.y] = tile;
 
                 //Debug.Log("Set health at " + localPosition + " AKA " + position + " to " + wallHealth[localPosition.x, localPosition.y]);
                 break;
@@ -453,8 +453,6 @@ public class TileManager : MonoBehaviour
 
                 //Use the rotation as an index for the sprite
                 objects[localPosition.x, localPosition.y].GetComponent<SaveableObject>().spriteRenderer.sprite = ((Tile)objectTiles[tile].tiles[rotation]).sprite;
-                tileData.objectTileTypes[localPosition.x, localPosition.y] = tile;
-                tileData.tileRotation[localPosition.x, localPosition.y] = rotation;
                 break;
             //Background
             case 3:
@@ -465,9 +463,6 @@ public class TileManager : MonoBehaviour
                     tileData.pathfindingCosts[localPosition.x, localPosition.y] = 2;
                     tileData.pathfindingRatios[localPosition.x, localPosition.y] = 1.5f;
                 }
-
-                tileData.backgroundTileTypes[localPosition.x, localPosition.y] = tile;
-
                 break;
             //Utilities
             case 5:
@@ -477,8 +472,6 @@ public class TileManager : MonoBehaviour
                 GameObject obj = Instantiate(utilityTiles[tile].prefab, position + (Vector3.one * 0.5f), Quaternion.identity, utilityTileGrid);
 
                 utilityObjects[localPosition.x, localPosition.y] = obj.GetComponent<SaveableObject>();
-
-                tileData.utilityTileTypes[localPosition.x, localPosition.y] = tile;
                 break;
             //AI
             case 6:
@@ -503,23 +496,22 @@ public class TileManager : MonoBehaviour
 
         Vector3Int localPosition = position - worldOrigin;
 
+        tileData.tileTypes[localPosition.x, localPosition.y, layer] = -1;
+
         switch (layer)
         {
             //Floor
             case 0:
                 tileData.pathfindingCosts[localPosition.x, localPosition.y] = 2;
                 tileData.pathfindingRatios[localPosition.x, localPosition.y] = 1.5f;
-                tileData.floorTileTypes[localPosition.x, localPosition.y] = -1;
                 break;
             //Walls
             case 1:
                 tileData.wallHealth[localPosition.x, localPosition.y] = 0;
                 damageTileMap.SetTile(position, null);
-                tileData.wallTileTypes[localPosition.x, localPosition.y] = -1;
                 break;
             //Objects
             case 2:
-                tileData.objectTileTypes[localPosition.x, localPosition.y] = -1;
                 if (objects[localPosition.x, localPosition.y] != null)
                 {
                     Destroy(objects[localPosition.x, localPosition.y]);
@@ -527,11 +519,9 @@ public class TileManager : MonoBehaviour
                 break;
             //Background
             case 3:
-                tileData.backgroundTileTypes[localPosition.x, localPosition.y] = -1;
                 break;
             //Utilities
             case 5:
-                tileData.utilityTileTypes[localPosition.x, localPosition.y] = -1;
                 if (utilityObjects[localPosition.x, localPosition.y] != null)
                 {
                     Destroy(utilityObjects[localPosition.x, localPosition.y]);
@@ -620,7 +610,7 @@ public class TileManager : MonoBehaviour
         }
 
         int currentHealth = tileData.wallHealth[localPosition.x, localPosition.y];
-        int tileHealth = wallTiles[tileData.wallTileTypes[localPosition.x, localPosition.y]].strength;
+        int tileHealth = wallTiles[tileData.tileTypes[localPosition.x, localPosition.y, 1]].strength;
 
         int tile;
         float healthPercent = ((float)currentHealth / (float)tileHealth);
@@ -731,28 +721,24 @@ public class TileManager : MonoBehaviour
             case 0:
                 buildTaskType = TaskType.BuildFloor;
                 removeTaskType = TaskType.RemoveFloor;
-                tileTypesToBuild = tileData.floorTileTypesToBuild;
                 tiles = floorTiles;
                 goto default;
             //Walls
             case 1:
                 buildTaskType = TaskType.BuildWall;
                 removeTaskType = TaskType.RemoveWall;
-                tileTypesToBuild = tileData.wallTileTypesToBuild;
                 tiles = wallTiles;
                 goto default;
             //Objects
             case 2:
                 buildTaskType = TaskType.BuildObject;
                 removeTaskType = TaskType.RemoveObject;
-                tileTypesToBuild = tileData.objectTileTypesToBuild;
                 tiles = objectTiles;
                 goto default;
             //Background
             case 3:
                 buildTaskType = TaskType.BuildBackground;
                 removeTaskType = TaskType.RemoveBackground;
-                tileTypesToBuild = tileData.backgroundTileTypesToBuild;
                 tiles = backgroundTiles;
                 goto default;
             //Zones
@@ -763,7 +749,6 @@ public class TileManager : MonoBehaviour
                 powerTileMap.gameObject.GetComponent<TilemapRenderer>().enabled = true;
                 buildTaskType = TaskType.BuildUtility;
                 removeTaskType = TaskType.RemoveUtility;
-                tileTypesToBuild = tileData.utilityTileTypesToBuild;
                 tiles = utilityTiles;
 
                 break;
@@ -966,23 +951,23 @@ public class TileManager : MonoBehaviour
             {
                 Vector3Int pos = new Vector3Int(worldOrigin.x + x, worldOrigin.y + y, 0);
 
-                if (tileData.floorTileTypes[x, y] >= 0)
-                    SetTile(pos, 0, tileData.floorTileTypes[x, y], 0, false, false);
+                if (tileData.tileTypes[x, y, 0] >= 0)
+                    SetTile(pos, 0, tileData.tileTypes[x, y, 0], 0, false, false);
 
-                if (tileData.wallTileTypes[x, y] >= 0)
+                if (tileData.tileTypes[x, y, 1] >= 0)
                 {
-                    SetTile(pos, 1, tileData.wallTileTypes[x, y], 0, false, false);
+                    SetTile(pos, 1, tileData.tileTypes[x, y, 1], 0, false, false);
                     DamageWall(pos, 0);
                 }
 
-                if (tileData.objectTileTypes[x, y] >= 0)
-                    SetTile(pos, 2, tileData.objectTileTypes[x, y], 0, false, false);
+                if (tileData.tileTypes[x, y, 2] >= 0)
+                    SetTile(pos, 2, tileData.tileTypes[x, y, 2], 0, false, false);
 
-                if (tileData.backgroundTileTypes[x, y] >= 0)
-                    SetTile(pos, 3, tileData.backgroundTileTypes[x, y], 0, false, false);
+                if (tileData.tileTypes[x, y, 3] >= 0)
+                    SetTile(pos, 3, tileData.tileTypes[x, y, 3], 0, false, false);
 
-                if (tileData.utilityTileTypes[x, y] >= 0)
-                    SetTile(pos, 5, tileData.utilityTileTypes[x, y], 0, true, false);
+                if (tileData.tileTypes[x, y, 5] >= 0)
+                    SetTile(pos, 5, tileData.tileTypes[x, y, 5], 0, true, false);
 
             }
         }
@@ -1035,7 +1020,7 @@ public class TileManager : MonoBehaviour
                     if (tileData.wallHealth[x, y] > 0)
                     {
                         //Gizmos.color = Color.white;
-                        Gizmos.color = new Color(1, 0, 0, 1 - (float)tileData.wallHealth[x, y] / wallTiles[tileData.wallTileTypes[x, y]].strength);
+                        Gizmos.color = new Color(1, 0, 0, 1 - (float)tileData.wallHealth[x, y] / wallTiles[tileData.tileTypes[x, y, 1]].strength);
                         Gizmos.DrawCube(worldOrigin + new Vector3(x + 0.5f, y + 0.5f, 0), Vector3.one);
                         //Debug.Log("X: " + x + " Y: " + y + " Health: " + wallHealth[x, y]);
                     }

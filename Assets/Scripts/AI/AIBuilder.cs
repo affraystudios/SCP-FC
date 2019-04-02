@@ -92,23 +92,23 @@ public class AIBuilder : AIBase
         {
             case TaskType.BuildFloor:
                 resources--;
-                tileManager.SetTile(pos, 0, tileManager.tileData.floorTileTypesToBuild[localPos.x, localPos.y]);
+                tileManager.SetTile(pos, 0, tileManager.tileData.tileTypesToBuild[localPos.x, localPos.y, 0]);
                 break;
             case TaskType.BuildWall:
                 resources--;
-                tileManager.SetTile(pos, 1, tileManager.tileData.wallTileTypesToBuild[localPos.x, localPos.y]);
+                tileManager.SetTile(pos, 1, tileManager.tileData.tileTypesToBuild[localPos.x, localPos.y, 1]);
                 break;
             case TaskType.BuildObject:
                 resources--;
-                tileManager.SetTile(pos, 2, tileManager.tileData.objectTileTypesToBuild[localPos.x, localPos.y], tileManager.tileData.tileRotation[localPos.x, localPos.y]);
+                tileManager.SetTile(pos, 2, tileManager.tileData.tileTypesToBuild[localPos.x, localPos.y, 2], tileManager.tileData.tileRotation[localPos.x, localPos.y, 2]);
                 break;
             case TaskType.BuildBackground:
                 resources--;
-                tileManager.SetTile(pos, 3, tileManager.tileData.backgroundTileTypesToBuild[localPos.x, localPos.y]);
+                tileManager.SetTile(pos, 3, tileManager.tileData.tileTypesToBuild[localPos.x, localPos.y, 3]);
                 break;
             case TaskType.BuildUtility:
                 resources--;
-                tileManager.SetTile(pos, 5, tileManager.tileData.utilityTileTypesToBuild[localPos.x, localPos.y]);
+                tileManager.SetTile(pos, 5, tileManager.tileData.tileTypesToBuild[localPos.x, localPos.y, 5]);
                 break;
 
             case TaskType.RemoveFloor:
