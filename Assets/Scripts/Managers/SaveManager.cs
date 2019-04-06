@@ -172,9 +172,6 @@ public struct WorldData
     public TimeManager.TimeStamp time;
     public TileData tileData;
     public AIData AIData;
-
-    public List<ObjectData> objects;
-    public List<EntityData> entities;
 }
 
 [System.Serializable]
@@ -211,8 +208,34 @@ public struct WorldSettings
 }
 
 [System.Serializable]
+public class Data
+{
+    public string name;
+    public string type = typeof(ObjectData).FullName;
+    public string data;
+
+    public void Save(ObjectData dataToSave)
+    {
+        name = dataToSave.name;
+        type = dataToSave.GetType().FullName;
+        data = JsonUtility.ToJson(dataToSave);
+    }
+
+    public ObjectData Load(out System.Type dataType)
+    {
+        ObjectData dataToLoad;
+
+        dataType = System.Type.GetType(type);
+
+        dataToLoad = (ObjectData)JsonUtility.FromJson(data, dataType);
+        return dataToLoad;
+    }
+}
+
+[System.Serializable]
 public class ObjectData
 {
+    public string name;
     public bool useUtilityList = false;
     public SerializableVector3 position;
 }
@@ -290,11 +313,8 @@ public struct TileData
     public int[,] wallHealth;
 
     public int[,,] tileTypes,
-
-        tileRotation,
-
-        tileTypesToBuild;
-
+        tileTypesToBuild,
+        tileRotation;
 
     public List<SerializableTask> tasks;
 
@@ -302,14 +322,14 @@ public struct TileData
 
     public List<SerializableVector3> waterToSimulate;
 
-    //Objects
-    public List<InteractableData> interactables;
-    public List<ElectronicData> electronics;
-    public List<GeneratorData> generators;
-    public List<WireData> wires;
-    public List<BreakerData> breakers;
+    public List<Data> objects;
 
-    public List<ObjectData> objects;
+    public void SaveObject(ObjectData dataToSave)
+    {
+        Data savedData = new Data();
+        savedData.Save(dataToSave);
+        objects.Add(savedData);
+    }
 
     public TileData(WorldSettings settings)
     {
@@ -351,14 +371,7 @@ public struct TileData
 
         tasks = new List<SerializableTask>();
 
-        objects = new List<ObjectData>();
-
-        interactables = new List<InteractableData>();
-
-        generators = new List<GeneratorData>();
-        electronics = new List<ElectronicData>();
-        wires = new List<WireData>();
-        breakers = new List<BreakerData>();
+        objects = new List<Data>();
     }
 }
 

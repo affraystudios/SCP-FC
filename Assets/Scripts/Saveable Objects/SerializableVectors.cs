@@ -5,13 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class SerializableVector3
 {
-    public float[] vector = new float[3];
+    public float x,
+        y,
+        z;
 
-    public SerializableVector3(float x, float y, float z)
+    public SerializableVector3(float _x, float _y, float _z)
     {
-        vector[0] = x;
-        vector[1] = y;
-        vector[2] = z;
+        x = _x;
+        y = _y;
+        z = _z;
     }
 
     public static implicit operator SerializableVector3(Vector3 value)
@@ -21,7 +23,7 @@ public class SerializableVector3
 
     public static implicit operator Vector3(SerializableVector3 value)
     {
-        return new Vector3(value.vector[0], value.vector[1], value.vector[2]);
+        return new Vector3(value.x, value.y, value.z);
     }
 }
 
@@ -29,12 +31,13 @@ public class SerializableVector3
 [System.Serializable]
 public class SerializableVector2
 {
-    public float[] vector = new float[2];
+    public float x,
+        y;
 
-    public SerializableVector2(float x, float y)
+    public SerializableVector2(float _x, float _y)
     {
-        vector[0] = x;
-        vector[1] = y;
+        x = _x;
+        x = _y;
     }
 
     public static implicit operator SerializableVector2(Vector2 value)
@@ -44,6 +47,6 @@ public class SerializableVector2
 
     public static implicit operator Vector2(SerializableVector2 value)
     {
-        return new Vector2(value.vector[0], value.vector[1]);
+        return new Vector2(value.x, value.y);
     }
 }

@@ -832,12 +832,7 @@ public class TileManager : MonoBehaviour
 
         data = tileData;
 
-        data.interactables = new List<InteractableData>();
-        data.objects = new List<ObjectData>();
-        data.electronics = new List<ElectronicData>();
-        data.wires = new List<WireData>();
-        data.generators = new List<GeneratorData>();
-        data.breakers = new List<BreakerData>();
+        data.objects = new List<Data>();
 
         for (int x = 0; x < worldSize.x; x++)
         {
@@ -851,27 +846,15 @@ public class TileManager : MonoBehaviour
                             goto case "Electronic";
 
                         case "Interactable":
-                            data.interactables.Add((InteractableData)objects[x, y].GetComponent<Interactable>().Save(new InteractableData()));
+                            data.SaveObject(objects[x, y].GetComponent<Interactable>().Save(new InteractableData()));
                             break;
 
                         case "Electronic":
-                            data.electronics.Add((ElectronicData)objects[x, y].GetComponent<Electronic>().Save(new ElectronicData()));
-                            break;
-
-                        case "Wire":
-                            data.wires.Add((WireData)objects[x, y].GetComponent<Wire>().Save(new WireData()));
-                            break;
-
-                        case "Generator":
-                            data.generators.Add((GeneratorData)objects[x, y].GetComponent<Generator>().Save(new GeneratorData()));
-                            break;
-
-                        case "Breaker":
-                            data.breakers.Add((BreakerData)objects[x, y].GetComponent<Breaker>().Save(new BreakerData()));
+                            data.SaveObject(objects[x, y].GetComponent<Electronic>().Save(new ElectronicData()));
                             break;
 
                         default:
-                            data.objects.Add(objects[x, y].GetComponent<SaveableObject>().Save(new ObjectData ()));
+                            data.SaveObject(objects[x, y].GetComponent<SaveableObject>().Save(new ObjectData()));
                             break;
                     }
                 }
@@ -883,15 +866,15 @@ public class TileManager : MonoBehaviour
                     switch (utilityObjects[x, y].tag)
                     {
                         case "Wire":
-                            data.wires.Add((WireData)utilityObjects[x, y].GetComponent<Wire>().Save(new WireData { useUtilityList = true }));
+                            data.SaveObject(utilityObjects[x, y].GetComponent<Wire>().Save(new WireData { useUtilityList = true }));
                             break;
 
                         case "Generator":
-                            data.generators.Add((GeneratorData)utilityObjects[x, y].GetComponent<Generator>().Save(new GeneratorData { useUtilityList = true }));
+                            data.SaveObject(utilityObjects[x, y].GetComponent<Generator>().Save(new GeneratorData { useUtilityList = true }));
                             break;
 
                         case "Breaker":
-                            data.breakers.Add((BreakerData)utilityObjects[x, y].GetComponent<Breaker>().Save(new BreakerData { useUtilityList = true }));
+                            data.SaveObject(utilityObjects[x, y].GetComponent<Breaker>().Save(new BreakerData { useUtilityList = true }));
                             break;
                     }
                 }
@@ -972,27 +955,21 @@ public class TileManager : MonoBehaviour
             }
         }
 
-        //Unify all the Object lists into one polymorphed list
-        List<ObjectData> datas = tileData.objects;
+        List<Data> datas = tileData.objects;
 
-        datas.AddRange(tileData.interactables);
-        datas.AddRange(tileData.electronics);
-        datas.AddRange(tileData.generators);
-        datas.AddRange(tileData.wires);
-        datas.AddRange(tileData.breakers);
-
-        foreach (ObjectData data in datas)
+        foreach (Data data in datas)
         {
-            Vector3Int pos = Vector3Int.FloorToInt(data.position) - worldOrigin;
-            //EHHH
-            // We have to seperate this to avoid a nullref
-            if (data.useUtilityList)
+            System.Type type;
+            ObjectData dataToUse = data.Load(out type);
+            Vector3Int pos = Vector3Int.FloorToInt(dataToUse.position) - worldOrigin;
+
+            if (dataToUse.useUtilityList)
             {
-                utilityObjects[pos.x, pos.y].GetComponent<SaveableObject>().Load(data);
+                utilityObjects[pos.x, pos.y].GetComponent<SaveableObject>().Load(dataToUse);
             }
             else
             {
-                objects[pos.x, pos.y].GetComponent<SaveableObject>().Load(data);
+                objects[pos.x, pos.y].GetComponent<SaveableObject>().Load(dataToUse);
             }
         }
 
