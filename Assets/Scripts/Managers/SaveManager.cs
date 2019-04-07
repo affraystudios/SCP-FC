@@ -256,7 +256,6 @@ public class CharacterData : EntityData
     public AccessLevel accessLevel;
     public float loyalty;
     public int home;
-    public string name;
 }
 
 [System.Serializable]
@@ -335,7 +334,7 @@ public struct TileData
     {
         Vector2 size = settings.size;
 
-        int layers = 6;
+        int layers = 7;
 
         int xSize = (int)size.x;
         int ySize = (int)size.y;
@@ -350,7 +349,7 @@ public struct TileData
             for (int y = 0; y < ySize; y++)
             {
                 for(int l = 0; l < layers; l++)
-                    tileTypes[x, y, layers] = -1;
+                    tileTypes[x, y, l] = -1;
             }
         }
 

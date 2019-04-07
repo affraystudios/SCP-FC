@@ -37,7 +37,7 @@ public class NewGameManager : MonoBehaviour
         settings = defaultSettings;
         biomeDropdown.value = settings.biome;
         difficultyDropdown.value = settings.difficulty;
-        sizeField.text = settings.size.vector[0].ToString();
+        sizeField.text = settings.size.x.ToString();
         nameField.text = settings.name;
 
         UpdateValues();

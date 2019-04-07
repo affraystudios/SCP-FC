@@ -776,6 +776,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -944628639613478452, guid: 75e70b06d65a777468f0fe78a1ca5fba,
         type: 3}
+    - target: {fileID: 114127745159672058, guid: b0232b9b23b248c4a8714ed8ba45b361,
+        type: 3}
+      propertyPath: worldSettings.size.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 114127745159672058, guid: b0232b9b23b248c4a8714ed8ba45b361,
+        type: 3}
+      propertyPath: worldSettings.size.y
+      value: 200
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0232b9b23b248c4a8714ed8ba45b361, type: 3}
 --- !u!1 &1305771639 stripped

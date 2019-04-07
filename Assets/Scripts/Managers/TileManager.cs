@@ -95,7 +95,6 @@ public class TileManager : MonoBehaviour
 
     TaskType buildTaskType,
         removeTaskType;
-    int[,] tileTypesToBuild;
     TileType[] tiles;
 
     #endregion
@@ -343,7 +342,7 @@ public class TileManager : MonoBehaviour
             };
 
             availableTasks.Add(newTask);
-            tileTypesToBuild[localPosition.x, localPosition.y] = tile;
+            tileData.tileTypesToBuild[localPosition.x, localPosition.y, layer] = tile;
             if (debug)
                 Debug.Log("Added tile " + tile + " at " + positions + " to the build list.");
         }
@@ -367,7 +366,7 @@ public class TileManager : MonoBehaviour
             if (GetTaskAtPosition(pos, out existingTask))
             {
                 blueprintTileMaps[layer].SetTile(pos, null);
-                GameManager.manager.playerData.money += tileTypesToBuild[localPosition.x, localPosition.y];
+                GameManager.manager.playerData.money += tileData.tileTypesToBuild[localPosition.x, localPosition.y, layer];
                 availableTasks.Remove(existingTask);
                 continue;
             }
@@ -422,6 +421,9 @@ public class TileManager : MonoBehaviour
         if (layer < 6)
             blueprintTileMaps[layer].SetTile(position, null);
 
+        //Debug.Log(localPosition.x + ", " + localPosition.y + ", " + layer);
+        //Debug.Log(tileData.tileTypes.GetLength(0) + ", " + tileData.tileTypes.GetLength(1) + ", " + tileData.tileTypes.GetLength(2));
+
         tileData.tileTypes[localPosition.x, localPosition.y, layer] = tile;
         tileData.tileRotation[localPosition.x, localPosition.y, layer] = rotation;
 
@@ -429,8 +431,7 @@ public class TileManager : MonoBehaviour
         {
             //Floor
             case 0:
-                tilemaps[layer].SetTile(position, floorTiles[tile].tiles
-                    [Random.Range(0, floorTiles[tile].tiles.Length)]);
+                tilemaps[layer].SetTile(position, floorTiles[tile].tiles[Random.Range(0, floorTiles[tile].tiles.Length-1)]);
 
                 tileData.pathfindingCosts[localPosition.x, localPosition.y] = floorTiles[tile].movementCost;
                 tileData.pathfindingRatios[localPosition.x, localPosition.y] = floorTiles[tile].movementRatio;
