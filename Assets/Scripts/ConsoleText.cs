@@ -7,6 +7,8 @@ public class ConsoleText : MonoBehaviour
 {
     public enum Timing { Start, OnEnable }
 
+    public bool useHierachy;
+
     public Timing timing = Timing.Start;
     public float startDelay = 1;
 
@@ -44,7 +46,7 @@ public class ConsoleText : MonoBehaviour
 
         int totalVisibleCharacters = m_textMeshPro.textInfo.characterCount; // Get # of Visible Character in text object
 
-        yield return new WaitForSeconds(startDelay);
+        yield return new WaitForSeconds(useHierachy ? transform.GetSiblingIndex() : startDelay);
 
         while (true)
         {

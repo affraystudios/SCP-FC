@@ -23,7 +23,7 @@ public class MenuManager : MonoBehaviour {
         if (newMenu >= 0)
         {
             menus[newMenu].SetActive(true);
-            if(menus[newMenu].GetComponentInChildren<Selectable>() != null)
+            if(!Application.isEditor && menus[newMenu].GetComponentInChildren<Selectable>() != null)
                 GameManager.manager.eventSystem.SetSelectedGameObject(menus[newMenu].GetComponentInChildren<Selectable>().gameObject);
         }
         else
